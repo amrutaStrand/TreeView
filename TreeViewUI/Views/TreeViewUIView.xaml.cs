@@ -3,6 +3,7 @@
     #region
 
     using System.Windows;
+    using System.Windows.Controls;
 
     #endregion
 
@@ -67,6 +68,10 @@
         /// </remarks>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            //TextBlock textBlock = new TextBlock();
+            //textBlock.Text = "Exploring OLCF";
+            //testGrid.Children.Add(textBlock);
+            testGrid.Children.Add(Model.testTree);
         }
 
         /// <summary>

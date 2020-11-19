@@ -4,6 +4,7 @@
 
     using Agilent.OpenLab.Framework.UI.Common.Commands;
     using Agilent.OpenLab.Framework.UI.Layout.ModuleInterfaces;
+    using System.Windows.Controls;
 
     #endregion
 
@@ -32,6 +33,11 @@
         /// Gets the view.
         /// </summary>
         ITreeViewUIView View { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        TreeView testTree { get; set; }
 
         #endregion
     }
