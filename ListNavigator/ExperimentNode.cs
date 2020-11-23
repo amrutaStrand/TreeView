@@ -8,16 +8,15 @@ namespace ListNavigator
 {
     public class ExperimentNode : AbstractDataNode
     {
-        public ExperimentNode()
+        public ExperimentNode() : this("MyExperiment")
         {
-            Name = "MyExperiment";
-            Type = "Experiment";
         }
 
         public ExperimentNode(string expName)
         {
             Name = expName;
             Type = "Experiment";
+            HoverText = string.Format("This is a {0} node", Type);
         }
     }
 }

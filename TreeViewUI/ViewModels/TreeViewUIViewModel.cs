@@ -65,6 +65,7 @@
             cluster.AddChild(new ExperimentNode("Experiment2"));
 
             ExperimentNode experiment3 = new ExperimentNode("Experiment3");
+            experiment3.HoverText = "My experiment";
             experiment3.AddChild(new CompoundsGroupNode("CompoundsGroup2"));
             experiment3.AddChild(new CompoundsGroupNode("CompoundsGroup3"));
 

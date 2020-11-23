@@ -8,16 +8,16 @@ namespace ListNavigator
 {
     public class ClusterNode : AbstractDataNode
     {
-        public ClusterNode()
+        public ClusterNode() : this("Cluster Node")
         {
-            Name = "Cluster Node";
-            Type = "hcsNode";
+
         }
 
         public ClusterNode(string ClusterName)
         {
             Name = ClusterName;
             Type = "hcsNode";
+            HoverText = string.Format("This is a {0} node", Type);
         }
     }
 }

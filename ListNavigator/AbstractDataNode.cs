@@ -14,13 +14,18 @@ namespace ListNavigator
 
         public string Type { get; set; }
 
-        public string notes;
-        public string hoverText;
-        public List<IDataNode> childrens;
+        public string Notes { get; set; }
+
+        public string HoverText { get; set; }
+
+        protected List<IDataNode> childrens;
+        protected ToolTip toolTip;
 
         public AbstractDataNode()
         {
             childrens = new List<IDataNode>();
+            toolTip = new ToolTip();
+            
         }
 
         private TreeViewItem node = new TreeViewItem();
@@ -32,12 +37,17 @@ namespace ListNavigator
             DockPanel dockPanel = new DockPanel();
 
             //get 'icon' corresponding to the node 'type' from resources and add it to the dockPanel
+            dockPanel.Children.Add(Util.GetIcon(Type));
 
             TextBlock textBlock1 = new TextBlock();
+            textBlock1.Margin = new System.Windows.Thickness(5);
             textBlock1.Text = Name;
             dockPanel.Children.Add(textBlock1);
 
             node.Header = dockPanel;
+
+            toolTip.Content = HoverText;
+            node.ToolTip = toolTip;
 
             //node.ExpandSubtree();
 

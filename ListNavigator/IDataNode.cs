@@ -19,6 +19,10 @@ namespace ListNavigator
         /// </summary>
         string Type { get; set; }
 
+        string Notes { get; set; }
+
+        string HoverText { get; set; }
+
         /// <summary>
         /// This method returns the TreeViewItem corresponding to current node. TreeViewItem of child nodes is also
         /// added to it.

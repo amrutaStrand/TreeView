@@ -8,16 +8,15 @@ namespace ListNavigator
 {
     public class CompoundsGroupNode : AbstractDataNode
     {
-        public CompoundsGroupNode()
+        public CompoundsGroupNode() : this("CompoundGroups")
         {
-            Name = "CompoundGroups";
-            Type = "CompoundGroups";
         }
 
         public CompoundsGroupNode(string CompoundGroupsName)
         {
             Name = CompoundGroupsName;
             Type = "CompoundGroups";
+            HoverText = string.Format("This is a {0} node", Type);
         }
     }
 }
