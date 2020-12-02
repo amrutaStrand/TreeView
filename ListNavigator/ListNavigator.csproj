@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="AbstractDataNode.cs" />
     <Compile Include="ClusterNode.cs" />
+    <Compile Include="Commands\ActionCommand.cs" />
     <Compile Include="CompoundsGroupNode.cs" />
     <Compile Include="ExperimentNode.cs" />
     <Compile Include="IDataNode.cs" />
