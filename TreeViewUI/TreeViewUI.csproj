@@ -108,9 +108,18 @@
     <Reference Include="Agilent.OpenLab.Framework.UI.XamOutlookBar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)\packages\Agilent.OpenLAB.Framework.UI.3.2.0.117\lib\net45\Agilent.OpenLab.Framework.UI.XamOutlookBar.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v19.2">
+      <HintPath>..\dlls\InfragisticsWPF4.Controls.Menus.XamDataTree.v19.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v19.2">
+      <HintPath>..\dlls\InfragisticsWPF4.DataManager.v19.2.dll</HintPath>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DataPresenter.v19.2, Version=19.2.20192.186, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\dlls\InfragisticsWPF4.DataPresenter.v19.2.dll</HintPath>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DragDrop.v19.2">
+      <HintPath>..\dlls\InfragisticsWPF4.DragDrop.v19.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.v19.2, Version=19.2.20192.186, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

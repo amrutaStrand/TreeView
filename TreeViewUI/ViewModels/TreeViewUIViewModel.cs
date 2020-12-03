@@ -12,6 +12,10 @@
 
     //using Infragistics.Windows.DataPresenter;
 
+    using Infragistics.Controls.Menus;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+
     #endregion
 
     /// <summary>
@@ -40,6 +44,8 @@
             this.InitializeCommands();
 
             testTree = CreateDataNodeTree();
+
+            testXamTree = CreateXamDataTree();
         }
 
         #endregion
@@ -77,6 +83,41 @@
             return Util.GetTree(experiment1);
         }
 
+        private XamDataTree CreateXamDataTree()
+        {
+            XamDataTree MyTree = new XamDataTree();
+
+            ExperimentNode experiment1 = new ExperimentNode("Experiment1");
+
+            CompoundsGroupNode compoundsGroup = new CompoundsGroupNode("CompoundsGroup1");
+
+            ClusterNode cluster = new ClusterNode("Cluster1");
+            cluster.AddChild(new ExperimentNode("Experiment2"));
+
+            ExperimentNode experiment3 = new ExperimentNode("Experiment3");
+            experiment3.HoverText = "My experiment";
+            experiment3.AddChild(new CompoundsGroupNode("CompoundsGroup2"));
+            experiment3.AddChild(new CompoundsGroupNode("CompoundsGroup3"));
+
+            cluster.AddChild(experiment3);
+
+            experiment1.AddChild(compoundsGroup);
+            experiment1.AddChild(cluster);
+
+            MyTree.ItemsSource = new ObservableCollection<IDataNode> { experiment1 };
+
+            NodeLayout mylayout = new NodeLayout();
+            mylayout.Key = "NodeLayout";
+            //mylayout.TargetTypeName = "AbstractDataNode";
+            //mylayout.TargetTypeName = "ExperimentNode";
+            mylayout.TargetTypeName = "IDataNode";
+            mylayout.DisplayMemberPath = "Name";
+
+            MyTree.GlobalNodeLayouts.Add(mylayout);
+
+            return MyTree;
+        }
+
         #region Public Properties
 
         /// <summary>
@@ -93,6 +134,11 @@
         /// 
         /// </summary>
         public TreeView testTree { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public XamDataTree testXamTree { get; set; }
 
         #endregion
     }

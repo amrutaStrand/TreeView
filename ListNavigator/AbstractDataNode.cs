@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Infragistics.Windows.DataPresenter;
 using ListNavigator.Commands;
+using System.Collections.ObjectModel;
 
 namespace ListNavigator
 {
@@ -20,7 +21,9 @@ namespace ListNavigator
 
         public string HoverText { get; set; }
 
-        protected List<IDataNode> childrens;
+        //protected List<IDataNode> childrens;
+        //public ObservableCollection<IDataNode> childrens;
+        public ObservableCollection<IDataNode> childrens { get; set; }
         protected ToolTip toolTip;
         protected TextBlock textBlock1;
 
@@ -63,7 +66,8 @@ namespace ListNavigator
             BoldFont = new ActionCommand(BoldFontExecute);
             NormalFont = new ActionCommand(NormalFontExecute);
 
-            childrens = new List<IDataNode>();
+            //childrens = new List<IDataNode>();
+            childrens = new ObservableCollection<IDataNode>();
             toolTip = new ToolTip();
             textBlock1 = new TextBlock();
             textBlock1.ContextMenu = CreateContextMenu();
@@ -85,6 +89,8 @@ namespace ListNavigator
             //textBlock1.MouseRightButtonDown += TextBlock1_MouseRightButtonDown;
             dockPanel.Children.Add(textBlock1);
 
+            node.MouseDoubleClick += Node_MouseDoubleClick;
+
             node.Header = dockPanel;
 
             toolTip.Content = HoverText;
@@ -96,6 +102,11 @@ namespace ListNavigator
                 node.Items.Add(child.GetItem());
 
             return node;
+        }
+
+        private void Node_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBox.Show( string.Format("Double clicked on {0} which is of type {1}", Name, Type));
         }
 
         private void TextBlock1_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

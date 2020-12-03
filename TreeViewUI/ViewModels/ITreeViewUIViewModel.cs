@@ -5,6 +5,7 @@
     using Agilent.OpenLab.Framework.UI.Common.Commands;
     using Agilent.OpenLab.Framework.UI.Layout.ModuleInterfaces;
     using System.Windows.Controls;
+    using Infragistics.Controls.Menus;
 
     #endregion
 
@@ -38,6 +39,11 @@
         /// 
         /// </summary>
         TreeView testTree { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        XamDataTree testXamTree { get; set; }
 
         #endregion
     }
