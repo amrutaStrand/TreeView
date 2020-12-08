@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using Infragistics.Windows.DataPresenter;
 using ListNavigator.Commands;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace ListNavigator
 {
@@ -75,6 +76,18 @@ namespace ListNavigator
 
         private TreeViewItem node = new TreeViewItem();
 
+        public TreeViewItem Node {
+            get
+            {
+                return GetItem();
+            }
+            set
+            {
+                node = value;
+
+            } 
+        }
+
         public TreeViewItem GetItem()
         {
             node.Items.Clear();
@@ -88,6 +101,8 @@ namespace ListNavigator
             textBlock1.Text = Name;
             //textBlock1.MouseRightButtonDown += TextBlock1_MouseRightButtonDown;
             dockPanel.Children.Add(textBlock1);
+
+            //node.PreviewMouseDoubleClick += (sender, e) => e.Handled = true;
 
             node.MouseDoubleClick += Node_MouseDoubleClick;
 
@@ -106,7 +121,9 @@ namespace ListNavigator
 
         private void Node_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MessageBox.Show( string.Format("Double clicked on {0} which is of type {1}", Name, Type));
+            if(node.IsMouseOver)
+                MessageBox.Show( string.Format("Double clicked on {0} which is of type {1}", Name, Type));
+            e.Handled = true;
         }
 
         private void TextBlock1_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
