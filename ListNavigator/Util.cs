@@ -42,7 +42,7 @@ namespace ListNavigator
         static public TreeView GetTree(IDataNode RootNode)
         {
             TreeView tree = new TreeView();
-            tree.Items.Add(RootNode.GetItem());
+            tree.Items.Add(RootNode.Node);
             return tree;
         }
     }

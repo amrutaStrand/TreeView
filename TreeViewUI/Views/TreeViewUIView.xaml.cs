@@ -71,7 +71,7 @@
             //TextBlock textBlock = new TextBlock();
             //textBlock.Text = "Exploring OLCF";
             //testGrid.Children.Add(textBlock);
-            testGrid.Children.Add(Model.testTree);
+            //testGrid.Children.Add(Model.testTree);
             testGrid.Children.Add(Model.testXamTree);
         }
 

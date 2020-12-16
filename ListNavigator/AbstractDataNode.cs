@@ -9,10 +9,11 @@ using Infragistics.Windows.DataPresenter;
 using ListNavigator.Commands;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Timers;
 
 namespace ListNavigator
 {
-    public class AbstractDataNode : IDataNode
+    public class AbstractDataNode : IDataNode, INotifyPropertyChanged
     {
         public string Name { get; set; }
 
@@ -24,9 +25,23 @@ namespace ListNavigator
 
         //protected List<IDataNode> childrens;
         //public ObservableCollection<IDataNode> childrens;
-        public ObservableCollection<IDataNode> childrens { get; set; }
+        private ObservableCollection<IDataNode> childrens;
+        public ObservableCollection<IDataNode> Childrens {
+            get
+            {
+                return childrens;
+            }
+            set
+            {
+                childrens = value;
+                OnPropertyChanged("Childrens");
+            } 
+        }
         protected ToolTip toolTip;
         protected TextBlock textBlock1;
+
+        private Timer ClickTimer;
+        private int ClickCounter;
 
         #region Commands and thier execute methods
 
@@ -58,7 +73,33 @@ namespace ListNavigator
             textBlock1.FontWeight = FontWeights.Normal;
         }
 
+        protected ActionCommand DeleteChilds;
+
+        private void DeleteChildsExecute(object p)
+        {
+            int c = Childrens.Count();
+            MessageBox.Show(string.Format("Removing all childs: Count is {0}", c));
+            //Childrens.Clear();
+            Childrens = new ObservableCollection<IDataNode>();
+        }
+
         #endregion
+
+        private TreeViewItem node = new TreeViewItem();
+
+        public TreeViewItem Node
+        {
+            get
+            {
+                UpdateNode();
+                return node;
+            }
+            set
+            {
+                node = value;
+                OnPropertyChanged("Node");
+            }
+        }
 
         public AbstractDataNode()
         {
@@ -66,29 +107,20 @@ namespace ListNavigator
             DecreaseFont = new ActionCommand(DecreaseFontExecute);
             BoldFont = new ActionCommand(BoldFontExecute);
             NormalFont = new ActionCommand(NormalFontExecute);
+            DeleteChilds = new ActionCommand(DeleteChildsExecute);
 
             //childrens = new List<IDataNode>();
-            childrens = new ObservableCollection<IDataNode>();
+            Childrens = new ObservableCollection<IDataNode>();
             toolTip = new ToolTip();
             textBlock1 = new TextBlock();
             textBlock1.ContextMenu = CreateContextMenu();
+            //node.ContextMenu = CreateContextMenu();
+
+            ClickTimer = new Timer(200);
+            ClickTimer.Elapsed += new ElapsedEventHandler(EvaluateClicks);
         }
 
-        private TreeViewItem node = new TreeViewItem();
-
-        public TreeViewItem Node {
-            get
-            {
-                return GetItem();
-            }
-            set
-            {
-                node = value;
-
-            } 
-        }
-
-        public TreeViewItem GetItem()
+        private void UpdateNode()
         {
             node.Items.Clear();
 
@@ -99,12 +131,11 @@ namespace ListNavigator
 
             textBlock1.Margin = new System.Windows.Thickness(5);
             textBlock1.Text = Name;
-            //textBlock1.MouseRightButtonDown += TextBlock1_MouseRightButtonDown;
             dockPanel.Children.Add(textBlock1);
 
-            //node.PreviewMouseDoubleClick += (sender, e) => e.Handled = true;
+            node.MouseDoubleClick += (sender, e) => e.Handled = true;
 
-            node.MouseDoubleClick += Node_MouseDoubleClick;
+            textBlock1.MouseLeftButtonDown += TextBlock1_MouseLeftButtonDown;
 
             node.Header = dockPanel;
 
@@ -113,22 +144,44 @@ namespace ListNavigator
 
             //node.ExpandSubtree();
 
-            foreach (IDataNode child in childrens)
-                node.Items.Add(child.GetItem());
+            foreach (IDataNode child in Childrens)
+                node.Items.Add(child.Node);
+        }
 
-            return node;
+        private void TextBlock1_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            //if (e.ClickCount==1)
+            //{
+            //    MessageBox.Show(string.Format("Single clicked on {0} which is of type {1}", Name, Type));
+            //}
+            //if (e.ClickCount == 2)
+            //{
+            //    MessageBox.Show(string.Format("Double clicked on {0} which is of type {1}", Name, Type));
+            //}
+            ClickTimer.Stop();
+            ClickCounter++;
+            ClickTimer.Start();
+        }
+
+        private void EvaluateClicks(object source, ElapsedEventArgs e)
+        {
+            ClickTimer.Stop();
+            if (ClickCounter == 1)
+            {
+                MessageBox.Show(string.Format("Single clicked on {0} which is of type {1}", Name, Type));
+            }
+            if (ClickCounter == 2)
+            {
+                MessageBox.Show(string.Format("Double clicked on {0} which is of type {1}", Name, Type));
+            }
+            ClickCounter = 0;
         }
 
         private void Node_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if(node.IsMouseOver)
-                MessageBox.Show( string.Format("Double clicked on {0} which is of type {1}", Name, Type));
+            //if(node.IsMouseOver)
+            //    MessageBox.Show( string.Format("Double clicked on {0} which is of type {1}", Name, Type));
             e.Handled = true;
-        }
-
-        private void TextBlock1_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Right clicked on " + (sender as TextBlock).Text);
         }
 
         private ContextMenu CreateContextMenu()
@@ -151,22 +204,37 @@ namespace ListNavigator
             normal.Header = "Normal Font";
             normal.Command = NormalFont;
 
+            MenuItem delete = new MenuItem();
+            delete.Header = "Delete all child";
+            delete.Command = DeleteChilds;
+
             cm.Items.Add(fontUp);
             cm.Items.Add(fontDown);
             cm.Items.Add(bold);
             cm.Items.Add(normal);
+            cm.Items.Add(delete);
 
             return cm;
         }
 
         public void AddChild(IDataNode node)
         {
-            childrens.Add(node);
+            Childrens.Add(node);
         }
 
         public void RemoveChild(IDataNode node)
         {
-            childrens.Remove(node);
+            Childrens.Remove(node);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string property)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
         }
     }
 }

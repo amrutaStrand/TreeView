@@ -43,12 +43,20 @@
             this.SubscribeEvents();
             this.InitializeCommands();
 
-            testTree = CreateDataNodeTree();
+            //testTree = CreateDataNodeTree();
+
+            CreateDataNodeTree();
 
             testXamTree = CreateXamDataTree();
+
+            TreeViewItems = new ObservableCollection<TreeViewItem>();
+
+            TreeViewItems.Add(experiment1.Node);
         }
 
         #endregion
+
+        ExperimentNode experiment1;
 
         private TreeView CreateSampleTree()
         {
@@ -61,9 +69,9 @@
             return myTree;
         }
 
-        private TreeView CreateDataNodeTree()
+        private void CreateDataNodeTree()
         {
-            ExperimentNode experiment1 = new ExperimentNode("Experiment1");
+            experiment1 = new ExperimentNode("Experiment1");
 
             CompoundsGroupNode compoundsGroup = new CompoundsGroupNode("CompoundsGroup1");
 
@@ -80,7 +88,7 @@
             experiment1.AddChild(compoundsGroup);
             experiment1.AddChild(cluster);
 
-            return Util.GetTree(experiment1);
+            //return Util.GetTree(experiment1);
         }
 
         private XamDataTree CreateXamDataTree()
@@ -133,7 +141,37 @@
         /// <summary>
         /// 
         /// </summary>
-        public TreeView testTree { get; set; }
+        public TreeView testTree {
+            get
+            {
+                TreeView tree = new TreeView();
+                OnPropertyChanged("testTree");
+                //tree.Items.Add(experiment1.GetItem());
+                tree.ItemsSource = new ObservableCollection<TreeViewItem> { experiment1.Node };
+                return tree;
+            }
+            set
+            {
+                OnPropertyChanged("testTree");
+            }
+        }
+
+        private ObservableCollection<TreeViewItem> treeViewItems;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<TreeViewItem> TreeViewItems {
+            get
+            {
+                return treeViewItems;
+            }
+            set
+            {
+                treeViewItems = value;
+                OnPropertyChanged("TreeViewItems");
+            }
+        }
 
         /// <summary>
         /// 

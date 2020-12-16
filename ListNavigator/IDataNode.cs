@@ -23,12 +23,14 @@ namespace ListNavigator
 
         string HoverText { get; set; }
 
+        TreeViewItem Node { get; set; }
+
         /// <summary>
         /// This method returns the TreeViewItem corresponding to current node. TreeViewItem of child nodes is also
         /// added to it.
         /// </summary>
         /// <returns></returns>
-        TreeViewItem GetItem();
+        //TreeViewItem GetItem();
 
         /// <summary>
         /// Adds a child to the node.
