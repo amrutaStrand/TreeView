@@ -18,6 +18,7 @@ namespace ListNavigator
             Name = ClusterName;
             Type = "hcsNode";
             HoverText = string.Format("This is a {0} node", Type);
+            InitializeNode();
         }
     }
 }

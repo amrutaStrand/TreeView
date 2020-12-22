@@ -17,6 +17,7 @@ namespace ListNavigator
             Name = CompoundGroupsName;
             Type = "CompoundGroups";
             HoverText = string.Format("This is a {0} node", Type);
+            InitializeNode();
         }
     }
 }

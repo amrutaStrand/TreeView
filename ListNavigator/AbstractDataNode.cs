@@ -81,6 +81,7 @@ namespace ListNavigator
             MessageBox.Show(string.Format("Removing all childs: Count is {0}", c));
             //Childrens.Clear();
             Childrens = new ObservableCollection<IDataNode>();
+            UpdateNode();
         }
 
         #endregion
@@ -113,6 +114,7 @@ namespace ListNavigator
             Childrens = new ObservableCollection<IDataNode>();
             toolTip = new ToolTip();
             textBlock1 = new TextBlock();
+            //InitializeNode();
             textBlock1.ContextMenu = CreateContextMenu();
             //node.ContextMenu = CreateContextMenu();
 
@@ -120,15 +122,14 @@ namespace ListNavigator
             ClickTimer.Elapsed += new ElapsedEventHandler(EvaluateClicks);
         }
 
-        private void UpdateNode()
+        protected void InitializeNode()
         {
-            node.Items.Clear();
-
             DockPanel dockPanel = new DockPanel();
 
             //get 'icon' corresponding to the node 'type' from resources and add it to the dockPanel
             dockPanel.Children.Add(Util.GetIcon(Type));
 
+            //textBlock1 = new TextBlock();
             textBlock1.Margin = new System.Windows.Thickness(5);
             textBlock1.Text = Name;
             dockPanel.Children.Add(textBlock1);
@@ -141,7 +142,13 @@ namespace ListNavigator
 
             toolTip.Content = HoverText;
             node.ToolTip = toolTip;
+        }
 
+        private void UpdateNode()
+        {
+            node.Items.Clear();
+
+           
             //node.ExpandSubtree();
 
             foreach (IDataNode child in Childrens)
