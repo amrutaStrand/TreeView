@@ -9,6 +9,6 @@
     Loaded="OnLoaded" 
     Unloaded="OnUnloaded">
     <StackPanel x:Name="testGrid" Margin="10">
-        <TreeView ItemsSource="{Binding TreeViewItems}"/>
+        <!--<TreeView ItemsSource="{Binding TreeViewItems}"/>-->
     </StackPanel>
 </UserControl>

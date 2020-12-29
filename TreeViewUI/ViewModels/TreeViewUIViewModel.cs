@@ -115,12 +115,9 @@
             MyTree.ItemsSource = new ObservableCollection<IDataNode> { experiment1 };
 
             NodeLayout mylayout = new NodeLayout();
-            mylayout.Key = "NodeLayout";
-            //mylayout.TargetTypeName = "AbstractDataNode";
-            //mylayout.TargetTypeName = "ExperimentNode";
+            mylayout.Key = "NodeLayout1";
             mylayout.TargetTypeName = "IDataNode";
             mylayout.DisplayMemberPath = "Name";
-
             MyTree.GlobalNodeLayouts.Add(mylayout);
 
             return MyTree;
@@ -145,9 +142,9 @@
             get
             {
                 TreeView tree = new TreeView();
-                OnPropertyChanged("testTree");
-                //tree.Items.Add(experiment1.GetItem());
-                tree.ItemsSource = new ObservableCollection<TreeViewItem> { experiment1.Node };
+                //OnPropertyChanged("testTree");
+                tree.Items.Add(experiment1.Node);
+                //tree.ItemsSource = new ObservableCollection<TreeViewItem> { experiment1.Node };
                 return tree;
             }
             set
@@ -169,7 +166,7 @@
             set
             {
                 treeViewItems = value;
-                OnPropertyChanged("TreeViewItems");
+                //OnPropertyChanged("TreeViewItems");
             }
         }
 

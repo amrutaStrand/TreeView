@@ -14,6 +14,7 @@ namespace ListNavigator
     {
         static Dictionary<string, string> IconRegistry = new Dictionary<string, string>
         {
+            { "AbstractDataNode", "pack://application:,,,/ListNavigator;component/Icons/exp.png" },
             { "Experiment", "pack://application:,,,/ListNavigator;component/Icons/exp.png" },
             { "CompoundGroups", "pack://application:,,,/ListNavigator;component/Icons/cg.png" },
             { "hcsNode", "pack://application:,,,/ListNavigator;component/Icons/cluster.png" }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,12 +26,11 @@ namespace ListNavigator
 
         TreeViewItem Node { get; set; }
 
-        /// <summary>
-        /// This method returns the TreeViewItem corresponding to current node. TreeViewItem of child nodes is also
-        /// added to it.
-        /// </summary>
-        /// <returns></returns>
-        //TreeViewItem GetItem();
+        ObservableCollection<IDataNode> Childrens { get; set; }
+
+        void SingleClickAction();
+
+        void DoubleClickAction();
 
         /// <summary>
         /// Adds a child to the node.

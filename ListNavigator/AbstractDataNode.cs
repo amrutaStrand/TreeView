@@ -25,20 +25,25 @@ namespace ListNavigator
 
         //protected List<IDataNode> childrens;
         //public ObservableCollection<IDataNode> childrens;
-        private ObservableCollection<IDataNode> childrens;
-        public ObservableCollection<IDataNode> Childrens {
-            get
-            {
-                return childrens;
-            }
-            set
-            {
-                childrens = value;
-                OnPropertyChanged("Childrens");
-            } 
-        }
+        //private ObservableCollection<IDataNode> childrens;
+        //public ObservableCollection<IDataNode> Childrens {
+        //    get
+        //    {
+        //        return childrens;
+        //    }
+        //    set
+        //    {
+        //        childrens = value;
+        //        OnPropertyChanged("Childrens");
+        //    } 
+        //}
+
+        public ObservableCollection<IDataNode> Childrens { get; set; }
+
         protected ToolTip toolTip;
         protected TextBlock textBlock1;
+        DockPanel dockPanel;
+        protected Image Icon;
 
         private Timer ClickTimer;
         private int ClickCounter;
@@ -79,9 +84,9 @@ namespace ListNavigator
         {
             int c = Childrens.Count();
             MessageBox.Show(string.Format("Removing all childs: Count is {0}", c));
-            //Childrens.Clear();
-            Childrens = new ObservableCollection<IDataNode>();
-            UpdateNode();
+            Childrens.Clear();
+            //UpdateNode();
+            Node.Items.Clear();
         }
 
         #endregion
@@ -98,25 +103,21 @@ namespace ListNavigator
             set
             {
                 node = value;
-                OnPropertyChanged("Node");
+                //OnPropertyChanged("Node");
             }
         }
 
         public AbstractDataNode()
         {
+            Type = "AbstractDataNode";
+
             IncreaseFont = new ActionCommand(IncreaseFontExecute);
             DecreaseFont = new ActionCommand(DecreaseFontExecute);
             BoldFont = new ActionCommand(BoldFontExecute);
             NormalFont = new ActionCommand(NormalFontExecute);
             DeleteChilds = new ActionCommand(DeleteChildsExecute);
 
-            //childrens = new List<IDataNode>();
-            Childrens = new ObservableCollection<IDataNode>();
-            toolTip = new ToolTip();
-            textBlock1 = new TextBlock();
-            //InitializeNode();
-            textBlock1.ContextMenu = CreateContextMenu();
-            //node.ContextMenu = CreateContextMenu();
+            InitializeNode();
 
             ClickTimer = new Timer(200);
             ClickTimer.Elapsed += new ElapsedEventHandler(EvaluateClicks);
@@ -124,32 +125,43 @@ namespace ListNavigator
 
         protected void InitializeNode()
         {
-            DockPanel dockPanel = new DockPanel();
+            //childrens = new List<IDataNode>();
+            Childrens = new ObservableCollection<IDataNode>();
+            dockPanel = new DockPanel();
 
             //get 'icon' corresponding to the node 'type' from resources and add it to the dockPanel
-            dockPanel.Children.Add(Util.GetIcon(Type));
+            Icon = Util.GetIcon(Type);
+            dockPanel.Children.Add(Icon);
+            DockPanel.SetDock(Icon, Dock.Left);
 
-            //textBlock1 = new TextBlock();
+            textBlock1 = new TextBlock();
             textBlock1.Margin = new System.Windows.Thickness(5);
             textBlock1.Text = Name;
+            textBlock1.ContextMenu = CreateContextMenu();
+            //node.ContextMenu = CreateContextMenu();
+            textBlock1.MouseLeftButtonDown += TextBlock1_MouseLeftButtonDown;
             dockPanel.Children.Add(textBlock1);
+            DockPanel.SetDock(textBlock1, Dock.Right);
 
             node.MouseDoubleClick += (sender, e) => e.Handled = true;
 
-            textBlock1.MouseLeftButtonDown += TextBlock1_MouseLeftButtonDown;
-
             node.Header = dockPanel;
 
+            toolTip = new ToolTip();
             toolTip.Content = HoverText;
             node.ToolTip = toolTip;
         }
 
         private void UpdateNode()
         {
-            node.Items.Clear();
+            dockPanel.Children.Remove(Icon);
+            Icon = Util.GetIcon(Type);
+            dockPanel.Children.Add(Icon);
+            DockPanel.SetDock(Icon, Dock.Left);
 
-           
-            //node.ExpandSubtree();
+            textBlock1.Text = Name;
+
+            node.Items.Clear();
 
             foreach (IDataNode child in Childrens)
                 node.Items.Add(child.Node);
@@ -157,7 +169,7 @@ namespace ListNavigator
 
         private void TextBlock1_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //if (e.ClickCount==1)
+            //if (e.ClickCount == 1)
             //{
             //    MessageBox.Show(string.Format("Single clicked on {0} which is of type {1}", Name, Type));
             //}
@@ -175,20 +187,23 @@ namespace ListNavigator
             ClickTimer.Stop();
             if (ClickCounter == 1)
             {
-                MessageBox.Show(string.Format("Single clicked on {0} which is of type {1}", Name, Type));
+                SingleClickAction();
             }
             if (ClickCounter == 2)
             {
-                MessageBox.Show(string.Format("Double clicked on {0} which is of type {1}", Name, Type));
+                DoubleClickAction();
             }
             ClickCounter = 0;
         }
 
-        private void Node_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        public virtual void SingleClickAction()
         {
-            //if(node.IsMouseOver)
-            //    MessageBox.Show( string.Format("Double clicked on {0} which is of type {1}", Name, Type));
-            e.Handled = true;
+            MessageBox.Show(string.Format("Single clicked on {0} which is of type {1}", Name, Type));
+        }
+
+        public virtual void DoubleClickAction()
+        {
+            MessageBox.Show(string.Format("Double clicked on {0} which is of type {1}", Name, Type));
         }
 
         private ContextMenu CreateContextMenu()
